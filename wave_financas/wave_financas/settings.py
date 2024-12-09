@@ -98,11 +98,11 @@ WSGI_APPLICATION = 'wave_financas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wave_financas',
-        'USER': 'postgres',
-        'PASSWORD': 'Excluiragora1.',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
