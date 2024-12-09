@@ -1,2 +1,9 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Detecção de Python, JavaScript e SQL
+*.py linguist-language=Python
+*.js linguist-language=JavaScript
+*.sql linguist-language=SQL
+
+# Marcar todos os diretórios para melhorar a detecção
+**/*.py linguist-detectable
+**/*.js linguist-detectable
+**/*.sql linguist-detectable
