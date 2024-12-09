@@ -1,0 +1,268 @@
+body{
+       background-color: #121212 !important;
+       overflow-y: hidden;
+       overflow-x: hidden;
+}
+.menu
+{
+    top: 0;
+    max-width: calc(100% - 8.3cm);
+    margin-left: 8.1cm;
+    background-color: #1D202A;
+    border-bottom: 1px solid rgb(149,211,239);
+    height: 55px;
+    cursor: default;
+    border-radius: 10px
+}
+.menu ul
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.menu ul li
+{
+    float: left;
+}
+.menu ul li a
+{
+    display: block;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    padding: 14px 16px;
+    text-decoration: none;
+    margin-right: 45px;
+}
+.menu ul li:hover
+{
+    background-color: #555;
+}
+.menu ul li:hover ul
+{
+    display: block;
+}
+.submenu
+{
+    display: none;
+    position: absolute;
+    background-color: #333;
+    width: 150px;
+    text-align: center;
+    line-height: 20px;
+    z-index: 10;
+}
+.submenu li
+{
+    display: block;
+}
+.submenu li a
+{
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+.submenu li:hover
+{
+    background-color: #555;
+}
+.menu-item
+{
+    position: relative;
+}
+.menu-icon
+{
+    position: absolute;
+    left: 88%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+}
+.clock
+{
+    text-align: center;
+    margin-top: 48px;
+}
+.clock p
+{
+    color: white;
+    font-size: 24px;
+    margin: 0;
+}
+.sidebar
+{
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8cm;
+    background-color: #1D202A;
+    color: white;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+.sidebar .user-profile
+{
+    padding: 20px;
+}
+.sidebar .user-avatar
+{
+    text-align: center;
+}
+.sidebar .user-avatar img
+{
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin-bottom: 10px;
+}
+.sidebar .user-info
+{
+    color: #124458;
+}
+.sidebar .user-info h2
+{
+    margin-bottom: 40px;
+}
+.sidebar .user-detail p
+{
+    margin: 5px;
+}
+.sidebar .info-separator
+{
+    margin: 10px 0 40px;
+    border: none;
+    border-top: 1px solid #fff;
+}
+.card-deck {
+    margin-left: 8.1cm;
+    max-width: calc(100% - 8.3cm);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.card {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    min-width: 250px;
+    max-width: 33%;
+    color: #e0e0e0;
+}
+.dashboard-container
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    margin-left: 8.1cm;
+    max-width: calc(100% - 8.3cm);
+    height: calc(100vh - 240px);
+}
+.filter-card
+{
+    flex: 1;
+    margin-right: 20px;
+    background-color: #1D202A;
+    padding: 23px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgb(149,211,239);
+}
+.filter-card h3
+{
+    margin-top: 0;
+    font-size: 20px;
+    color: white;
+}
+.filter-card form
+{
+    margin-top: 20px;
+}
+.form-group
+{
+    margin-bottom: 35px;
+}
+.form-group label
+{
+    display: block;
+    color: gray;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.form-group select,
+.form-group input[type="date"]
+{
+    width: 100%;
+    padding: 8px;
+    background-color: #ccc;
+    border: 1px solid rgb(149,211,239);
+    border-radius: 3px;
+}
+.chart-container
+{
+    flex: 1;
+    background-color: #1D202A;
+    padding: 23px;
+    border-radius: 5px;
+    border: 1px solid rgb(149,211,239);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#areaChart
+{
+    width: 100%;
+    height: 100%;
+}
+.container
+{
+    background-color: #1D202A;
+    border: 1px solid rgb(149,211,239);
+    border-radius: 10px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.table th {
+    background-color: #2D2D2D;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #404040;
+}
+
+#projgest-form .form-control, #projgest-form .form-select {
+    background-color: #2D2D2D;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+#projgest-form .form-control:focus, #projgest-form .form-select:focus {
+    box-shadow: 0 0 5px #2D7997;
+    border-color: #2D7997;
+}
+.btn {
+    border-radius: 10px;
+}
+#ativos-container {
+    overflow-x: auto;
+    display: flex;
+    gap: 15px;
+    padding-bottom: 10px;
+}
+
+#ativos-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+#ativos-container::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 5px;
+}
+
+#ativos-container::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}

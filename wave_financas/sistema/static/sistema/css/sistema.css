@@ -1,0 +1,64 @@
+.container
+{
+    background-color: #1D202A;
+    border: 1px solid rgb(149,211,239);
+    border-radius: 10px;
+}
+.card
+{
+    margin-right: 10px;
+    border: none;
+    border-radius: 0.5rem;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    min-width: 250px;
+    max-width: 33%;
+    color: #e0e0e0;
+}
+.card-title
+{
+    font-family: 'Arial', sans-serif;
+}
+.table thead th
+{
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.table-striped tbody tr:nth-of-type(odd)
+{
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.table-hover tbody tr:hover
+{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.card-meta {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card-meta:hover {
+    transform: scale(1.05);
+}
+.card-deck {
+    max-width: calc(100% - 8.3cm);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.card-header {
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    padding: 0.75rem;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-footer button {
+    width: 45%;
+}

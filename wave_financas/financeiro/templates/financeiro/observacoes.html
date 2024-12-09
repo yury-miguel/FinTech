@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operações - Wave FinTech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'financeiro/css/financeiro.css' %}">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4" style="color: #7C7C7C; font-weight: bold;">Operações Diárias</h2>
+        <form id="obs-form" method="post" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="detalhe" class="form-label text-white">Detalhe:</label>
+                <textarea id="detalhe" name="detalhe" class="form-control" rows="5" placeholder="Descreva a operação..." required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label text-white">Status</label>
+                <select id="status" name="status" class="form-select" required>
+                    <option value="gain">Gain</option>
+                    <option value="loss">Loss</option>
+                </select>
+            </div>
+            <button type="submit" class="btn w-100 mb-3" style="background-color: #2D7997; color: white;">Cadastrar</button>
+        </form>
+        <div>
+            <div id="form-message4" class="alert alert-info text-center d-none"></div>
+        </div>
+    </div>
+    <script src="{% static 'financeiro/js/financeiro.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('obs-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formMessage = document.getElementById('form-message4');
+            var formData = new FormData(this);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/financeiro/cadastrar_observacao_daytrade/', true);
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    var response = JSON.parse(xhr.responseText);
+
+                if (xhr.status === 201) {
+                    formMessage.textContent = response.success;
+                    formMessage.className = 'alert alert-success text-center';
+                    formMessage.classList.remove('d-none');
+
+                    document.getElementById('obs-form').reset();
+
+                    setTimeout(function () {
+                        formMessage.classList.add('d-none');
+                    }, 3000);
+                } else {
+                    formMessage.textContent = response.error || 'Erro ao cadastrar o observacao.';
+                    formMessage.className = 'alert alert-danger text-center';
+                    formMessage.classList.remove('d-none');
+
+                    setTimeout(function () {
+                        formMessage.classList.add('d-none');
+                    }, 3000);
+                }
+                }
+            };
+            xhr.send(formData);
+        });
+
+        hideContainers();
+    </script>
+</body>
+</html>

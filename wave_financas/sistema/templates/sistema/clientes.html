@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes - Wave FinTech</title>
+    <link rel="stylesheet" href="{% static 'sistema/css/sistema.css' %}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include "financeiro/fluxo.html" %}
+
+    <div class="container mt-4" style="margin-left: 8.1cm; max-width: calc(100% - 8.3cm); height: calc(100vh - 90px); overflow-y: auto;">
+        <h1 class="text-center" style="color: #7C7C7C; font-weight: bold;">Cadastro de Clientes</h1>
+        <div id="alert-container" style="display: none;" class="alert alert-success" role="alert"></div>
+        <!-- Formulário de Cadastro de Clientes -->
+        <div class="card-fluid" style="padding: 30px; margin-top: -40px;">
+            <div class="card-body">
+                <form id="cliente-form" action="" method="post">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nome" class="form-label text-white fw-bold">Nome</label>
+                            <input type="text" id="nome" name="nome" class="form-control" style="border-radius: 10px;" placeholder="Nome do Cliente" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contato" class="form-label text-white fw-bold">Contato</label>
+                            <input type="text" id="contato" name="contato" class="form-control" style="border-radius: 10px;" placeholder="Telefone ou Email" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="cep" class="form-label text-white fw-bold">Cep</label>
+                            <input type="text" id="cep" name="cep" class="form-control" style="border-radius: 10px;" placeholder="Cep">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="cidade" class="form-label text-white fw-bold">Cidade</label>
+                            <input type="text" id="cidade" name="cidade" class="form-control" style="border-radius: 10px;" placeholder="Cidade" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="uf" class="form-label text-white fw-bold">Estado</label>
+                            <input type="text" id="uf" name="uf" class="form-control" style="border-radius: 10px;" placeholder="UF - Estado" maxlength="2" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="bairro" class="form-label text-white fw-bold">Bairro</label>
+                            <input type="text" id="bairro" name="bairro" class="form-control" style="border-radius: 10px;" placeholder="Bairro">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="rua" class="form-label text-white fw-bold">Rua</label>
+                            <input type="text" id="rua" name="rua" class="form-control" style="border-radius: 10px;" placeholder="Rua">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label text-white fw-bold">Descrição</label>
+                        <textarea id="descricao" name="descricao" class="form-control" style="border-radius: 10px;" rows="3" placeholder="Informações adicionais"></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn" style="background-color: #2D7997; color: white;">Cadastrar</button>
+                        <a href="{% url 'editar_cliente' %}" class="btn mt-3" style="background-color: #8CABAA; color: white;">Editar Cliente</a>
+                        <a href="{% url 'relatorio_clientes' %}" class="btn mt-3" style="background-color: #AB8C99; color: white;">Relatório Clientes</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'sistema/js/sistema.js' %}"></script>
+    <script>
+          hideContainers();
+          document.getElementById('cep').addEventListener('input', function () {
+            const cep = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+
+            if (cep.length === 8) { // CEP válido possui 8 dígitos
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            document.getElementById('rua').value = data.logradouro || '';
+                            document.getElementById('bairro').value = data.bairro || '';
+                            document.getElementById('cidade').value = data.localidade || '';
+                            document.getElementById('uf').value = data.uf || '';
+                        } else {
+                            alert('CEP não encontrado!');
+                        }
+                    })
+                    .catch(() => alert('Erro ao buscar o CEP!'));
+            }
+        });
+
+        // Limita o campo UF a apenas duas letras
+        document.getElementById('uf').addEventListener('input', function () {
+            this.value = this.value.toUpperCase().slice(0, 2); // Apenas duas letras maiúsculas
+        });
+
+          document.getElementById('cliente-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            // Cria um FormData com os dados do formulário
+            const formData = new FormData(this);
+
+            // Envia os dados para o servidor usando fetch
+            fetch('/sistema/cadastrar_cliente/', { // Altere para a rota correta
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Exibe a mensagem de sucesso
+                    const alertContainer = document.getElementById('alert-container');
+                    alertContainer.innerText = data.message;
+                    alertContainer.style.display = 'block';
+
+                    // Oculta a mensagem após 3 segundos
+                    setTimeout(() => {
+                        alertContainer.style.display = 'none';
+                    }, 3000);
+
+                    // Reseta o formulário
+                    this.reset();
+                } else {
+                    console.error('Erro ao cadastrar o cliente:', data);
+                }
+            })
+            .catch(error => console.error('Erro ao cadastrar o cliente:', error));
+        });
+    </script>
+</body>
+</html>

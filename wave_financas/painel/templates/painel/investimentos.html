@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel</title>
+    <link rel="stylesheet" href="{% static 'painel/css/painel.css' %}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include "financeiro/fluxo.html" %}
+    <div class="container mt-4" style="margin-left: 8.1cm; max-width: calc(100% - 8.3cm); height: calc(100vh - 90px); overflow-y: auto;">
+
+    </div>
+    <script src="{% static 'painel/js/painel.js' %}"></script>
+    <script>
+        hideContainers();
+    </script>
+</body>
+</html>

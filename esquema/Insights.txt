@@ -1,0 +1,39 @@
+1. Financeiro
+Linha do tempo com total receitas x total despesas.
+Mes/ano com maiores despesas e maiores receitas.
+Total ganho com DayTrade e filtragem por período.
+Total ganho com Projetos e filtragem por periodo.
+Total ganho com Ativos e filtragem por período.
+
+
+2. Projetos
+Exibir total de projetos concluídos.
+Exibir Projetos Ativos (data fim is NULL).
+Receita Liquida de projetos por períodos trimestrais/semestrais/anuais.
+
+
+3. Day Trade 
+Evolução do caixa por períodos trimestrais/semestrais/anuais.
+Evolução do lucro liquido total por mês/ano
+Exibir e filtrar observações por data ou período, gain ou loss
+Comparativo de gain e loss por mês/ano
+Desempenho diário baseado em gain e loss
+
+
+4. Investimentos
+Valor total investido x Valor retorno.
+Retorno total dos ativos
+Rentabilidade Média -> Retorno total - Valor Total Investido / Valor Total Investido * 100
+Ativos Ativos sem data retorno
+Ativos investidos baseado em períodos
+Distribuição de ativos
+Retorno sobre Investimento (ROI): Indicadores de ROI para cada ativo.
+
+
+5. Clientes
+Total de clientes.
+Mapa com distribuição geográfica dos clientes.
+Clientes que geraram maiores receitas (mostrar titulo do projeto).
+Linha do tempo indicando clientes por mês/ano.
+
+

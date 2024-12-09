@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão Portfólio - Wave FinTech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'financeiro/css/financeiro.css' %}">
+</head>
+<body>
+    {% include "financeiro/fluxo.html" %}
+    <div class="container mt-4" style="margin-left: 8.1cm; max-width: calc(100% - 8.3cm); height: calc(100vh - 90px);">
+        <h1 class="text-center" style="color: #7C7C7C; font-weight: bold;">Gestão Portifólio</h1>
+
+        <!-- Abas para alternar entre seções -->
+        <ul class="nav nav-tabs" id="portfolioTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" style="color: #2D7997;" id="gestaoprojetos-tab" data-bs-toggle="tab" data-bs-target="#gestaoprojetos" type="button" role="tab" aria-controls="projetos" aria-selected="true">Projetos</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" style="color: #2D7997;" id="gestaoativos-tab" data-bs-toggle="tab" data-bs-target="#gestaoativos" type="button" role="tab" aria-controls="ativos" aria-selected="false">Ativos</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" style="color: #2D7997;" id="gestaodaytrade-tab" data-bs-toggle="tab" data-bs-target="#gestaodaytrade" type="button" role="tab" aria-controls="daytrade" aria-selected="false">DayTrade Mensal</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" style="color: #2D7997;" id="gestaoobservacoes-tab" data-bs-toggle="tab" data-bs-target="#gestaoobservacoes" type="button" role="tab" aria-controls="observacoes" aria-selected="false">Operações DayTrade</button>
+            </li>
+        </ul>
+
+        <!-- Conteúdo das Abas -->
+        <div class="tab-content mt-3">
+            <!-- Projetos -->
+            <div class="tab-pane fade show active" id="gestaoprojetos" role="tabpanel" aria-labelledby="gestaoprojetos-tab">
+                {% include "financeiro/gestaoprojetos.html" %}
+            </div>
+            <!-- Ativos -->
+            <div class="tab-pane fade" id="gestaoativos" role="tabpanel" aria-labelledby="gestaoativos-tab">
+                {% include "financeiro/gestaoativos.html" %}
+            </div>
+            <!-- DayTrade -->
+            <div class="tab-pane fade" id="gestaodaytrade" role="tabpanel" aria-labelledby="gestaodaytrade-tab">
+                {% include "financeiro/gestaodaytrade.html" %}
+            </div>
+
+            <div class="tab-pane fade" id="gestaoobservacoes" role="tabpanel" aria-labelledby="gestaoobservacoes-tab">
+                {% include "financeiro/gestaoobservacoes.html" %}
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'financeiro/js/financeiro.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+          hideContainers();
+    </script>
+</body>
+</html>

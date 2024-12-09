@@ -1,0 +1,113 @@
+body
+{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    overflow-y: hidden;
+}
+#login-form
+{
+    margin: 100px auto;
+    width: 75%;
+    height: 485px;
+    border-width: 2px 4px;
+    border-radius: 20px;
+    background-color: #121212;
+    box-shadow: 0 0 10px #2ca8e2;
+    padding-top: 45px;
+    position: relative;
+    display: flex;
+}
+.flag
+{
+    position: absolute;
+    top: 15px;
+    right: 25px;
+}
+.divider
+{
+    width: 2px;
+    height: 520px;
+    background-color: #64B5F6;
+    margin:-40px auto;
+}
+
+h2
+{
+    text-align: center;
+    color: #64B5F6;
+}
+
+form
+{
+    width: 300px;
+    margin: 0 auto;
+}
+form input[type="email"],
+form input[type="password"]
+{
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    background-color: #E3E3E3;
+    color: black;
+    border-radius: 7px;
+}
+form input[type="submit"]
+{
+    width: 60%;
+    padding: 10px;
+    margin: 20px 60px;
+    box-sizing: border-box;
+    background-color: #64B5F6;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 8px;
+}
+form input[type="submit"]:hover
+{
+    background-color: #1976D2;
+}
+.messages
+{
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    width: 300px;
+    text-align: center;
+}
+.messages li
+{
+    color: #ff0000;
+    margin-bottom: 10px;
+}
+.divider2
+{
+    width: 40%;
+    height: 2px;
+    background-color: #64B5F6;
+    margin:-10px auto;
+    margin-bottom: 40px;
+}
+.left-side,
+.right-side
+{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+form
+{
+    width: 300px;
+    margin-top: 20px;
+}
+.chart-container
+{
+    margin-top: 50px;
+}

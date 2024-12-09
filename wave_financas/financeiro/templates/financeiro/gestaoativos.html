@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão Ativos - Wave FinTech</title>
+    <link rel="stylesheet" href="{% static 'financeiro/css/fluxo.css' %}">
+</head>
+<body>
+    <div class="container mt-4 text-white" style="height: calc(100vh - 250px); overflow-y: auto;">
+        <div id="ativos-container" class="d-flex gap-3 px-3" style="overflow-x: auto;">
+            <div class="text-center text-white">Carregando ativos...</div>
+        </div>
+
+        <form id="ativogest-form" method="post" action="" class="mt-4">
+            {% csrf_token %}
+            <input type="hidden" id="id_ativo" name="id_ativo" value="">
+            <div class="mb-3">
+                <label for="descricao" class="form-label text-white">Descrição:</label>
+                <textarea id="descricao" name="descricao" class="form-control bg-dark text-white" rows="2" placeholder="Descreva o ativo..." required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="valor_investido" class="form-label text-white">Valor Investido:</label>
+                <input type="number" id="valor_investido" name="valor_investido" class="form-control bg-dark text-white" placeholder="Digite o valor investido" required>
+            </div>
+            <div class="mb-3">
+                <label for="data_investimento" class="form-label text-white">Data Investimento:</label>
+                <input type="date" id="data_investimento" name="data_investimento" class="form-control bg-dark text-white" required>
+            </div>
+            <div class="mb-3">
+                <label for="valor_retorno" class="form-label text-white">Valor Retorno:</label>
+                <input type="number" id="valor_retorno" name="valor_retorno" class="form-control bg-dark text-white" placeholder="Digite o valor retorno (opcional)">
+            </div>
+            <div class="mb-3">
+                <label for="data_retorno" class="form-label text-white">Data Retorno:</label>
+                <input type="date" id="data_retorno" name="data_retorno" class="form-control bg-dark text-white">
+            </div>
+            <button type="submit" class="btn w-100 mb-3" style="background-color: #2D7997; color: white;">Editar</button>
+        </form>
+        <div>
+            <div id="form-message8" class="alert alert-info text-center d-none"></div>
+        </div>
+    </div>
+    <script src="{% static 'financeiro/js/financeiro.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('ativogest-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formMessage = document.getElementById('form-message8');
+            var formData = new FormData(this);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/financeiro/gestao_ativos/', true);
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    var response = JSON.parse(xhr.responseText);
+
+                if (xhr.status === 201) {
+                    formMessage.textContent = response.success;
+                    formMessage.className = 'alert alert-success text-center';
+                    formMessage.classList.remove('d-none');
+
+                    document.getElementById('projeto-form').reset();
+
+                    setTimeout(function () {
+                        formMessage.classList.add('d-none');
+                    }, 3000);
+                } else {
+                    formMessage.textContent = response.error || 'Erro ao editar o projeto.';
+                    formMessage.className = 'alert alert-danger text-center';
+                    formMessage.classList.remove('d-none');
+
+                    setTimeout(function () {
+                        formMessage.classList.add('d-none');
+                    }, 3000);
+                }
+                }
+            };
+            xhr.send(formData);
+        });
+
+        carregarAtivos('{{ csrf_token }}');
+        hideContainers();
+    </script>
+</body>
+</html>

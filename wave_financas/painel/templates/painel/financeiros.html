@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel</title>
+    <link rel="stylesheet" href="{% static 'painel/css/painel.css' %}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include "financeiro/fluxo.html" %}
+    <div class="container mt-4" style="margin-left: 8.1cm; max-width: calc(100% - 8.3cm); height: calc(100vh - 90px); overflow-y: auto;">
+        <div class="row">
+            <!-- Cards de Resumo -->
+            {% for cartao in dados_cartoes %}
+            <div class="col-md-3">
+                <div class="card {{ cartao.cor }} mb-3 shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ cartao.titulo }}</h5>
+                        <p class="card-text fs-5 fw-bold">R$ {{ cartao.valor|floatformat:2 }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Gráfico: Linha do Tempo -->
+        <div id="grafico-fluxo" class="mt-4">
+            <h5 class="text-muted">Fluxo Financeiro</h5>
+            <canvas id="fluxo-timeline"></canvas>
+        </div>
+
+        <!-- Maiores valores -->
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="p-3 border bg-light rounded shadow-sm">
+                    <h6 class="text-muted">Maior Receita:</h6>
+                    <p class="fs-5">{{ dados.maior_receita.descricao }} - R$ {{ dados.maior_receita.valor|floatformat:2 }}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 border bg-light rounded shadow-sm">
+                    <h6 class="text-muted">Maior Despesa:</h6>
+                    <p class="fs-5">{{ dados.maior_despesa.descricao }} - R$ {{ dados.maior_despesa.valor|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'painel/js/painel.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        hideContainers();
+        const ctx = document.getElementById('fluxo-timeline').getContext('2d');
+        const fluxoMensal = JSON.parse('{{ dados.fluxo_mensal|escapejs }}');
+        const meses = fluxoMensal.map(item => new Date(item.month).toLocaleString('default', { month: 'short', year: 'numeric' }));
+        const receitas = fluxoMensal.map(item => item.receitas || 0);
+        const despesas = fluxoMensal.map(item => item.despesas || 0);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: meses,
+                datasets: [
+                    {
+                        label: 'Receitas',
+                        data: receitas,
+                        borderColor: '#4CAF50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                    },
+                    {
+                        label: 'Despesas',
+                        data: despesas,
+                        borderColor: '#FF5252',
+                        backgroundColor: 'rgba(255, 82, 82, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+    </script>
+</body>
+</html>

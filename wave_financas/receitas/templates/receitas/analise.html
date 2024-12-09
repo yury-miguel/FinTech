@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Análise Receita - Wave FinTech</title>
+    <link rel="stylesheet" href="{% static 'receitas/css/receitas.css' %}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include "financeiro/fluxo.html" %}
+    <div class="container mt-4" style="margin-left: 8.1cm; max-width: calc(100% - 8.3cm); height: calc(100vh - 90px);">
+        <h1 class="text-center mb-4" style="color: #7C7C7C; font-weight: bold;">Análise de Receitas</h1>
+
+        <div class="total-receitas">
+            <h2 style="color: white;">Valor Total das Receitas: R$ {{ total_receitas }}</h2>
+        </div>
+
+        <div class="grafico-pareto">
+            <canvas id="paretoChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'receitas/js/receitas.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('paretoChart').getContext('2d');
+
+            // Dados vindos do backend
+            var receitasPorCategoria = {{ receitas_por_categoria|safe }};
+
+            // Extrai labels e valores
+            var labels = receitasPorCategoria.map(function (item) {
+                return item.categoria; // Nome da categoria
+            });
+
+            var data = receitasPorCategoria.map(function (item) {
+                return item.valor__sum; // Total da categoria
+            });
+
+            // Criação do gráfico
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Receitas por Categoria',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) {
+                                    return 'R$ ' + value.toFixed(2);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return 'R$ ' + context.raw.toFixed(2);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        hideContainers();
+    </script>
+</body>
+</html>

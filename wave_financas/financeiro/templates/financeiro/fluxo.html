@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo - Wave FinTech</title>
+    <link rel="stylesheet" href="{% static 'financeiro/css/fluxo.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Menu de navegação no topo -->
+    <div class="menu">
+        <ul>
+            <li><a onclick="showSubMenu('financeiro')" class="menu-item">
+                    <img src="{% static 'financeiro/img/financa.png' %}" class="menu-icon">
+                    Financeiro
+                </a>
+                <ul class="submenu" id="financeiro">
+                    <li><a href="{% url 'fluxo_financeiro' %}">Fluxo</a></li>
+                    <li><a href="{% url 'extrato_financeiro' %}">Extrato</a></li>
+                    <li><a href="{% url 'portifolio' %}">Portifólio</a></li>
+                    <li><a href="{% url 'gestao_portifolio' %}"> Gestão Portifólio</a></li>
+                </ul>
+            </li>
+            <li>
+                <a onclick="showSubMenu('receitas')" class="menu-item">
+                    <img src="{% static 'financeiro/img/a-receber.png' %}" class="menu-icon">
+                    Receitas
+                </a>
+                <ul class="submenu" id="receitas">
+                    <li><a href=" {% url 'cadastrar_receita' %}">Cadastro</a></li>
+                    <li><a href="{% url 'editar_receita' %}">Gestão</a></li>
+                    <li><a href="{% url 'receitas_por_categoria' %}">Análises</a></li>
+                </ul>
+            </li>
+            <li>
+                <a onclick="showSubMenu('despesas')" class="menu-item">
+                    <img src="{% static 'financeiro/img/pagar.png' %}" class="menu-icon">
+                    Despesas
+                </a>
+                <ul class="submenu" id="despesas">
+                    <li><a href=" {% url 'cadastrar_despesa' %}">Cadastro</a></li>
+                    <li><a href="{% url 'editar_despesa' %}">Gestão</a></li>
+                    <li><a href="{% url 'despesas_por_categoria' %}">Análises</a></li>
+                </ul>
+            </li>
+            <li><a onclick="showSubMenu('painel')" class="menu-item">
+                    <img src="{% static 'financeiro/img/painel.png' %}" class="menu-icon">
+                    Painel
+                </a>
+                <ul class="submenu" id="painel">
+                    <li><a href="{% url 'painel_financeiro' %}">Financeiro</a></li>
+                    <li><a href="{% url 'painel_clientes' %}">Clientes</a></li>
+                    <li><a href="{% url 'painel_projetos' %}">Projetos</a></li>
+                    <li><a href="{% url 'painel_investimentos' %}">Investimentos</a></li>
+                    <li><a href="{% url 'painel_daytrade' %}">DayTrade</a></li>
+                </ul>
+            </li>
+            <li><a onclick="showSubMenu('sistema')" class="menu-item">
+                    <img src="{% static 'financeiro/img/sis.png' %}" class="menu-icon">
+                    Sistema
+                </a>
+                <ul class="submenu" id="sistema">
+                    <li><a href="{% url 'cadastrar_meta' %}">Metas</a></li>
+                    <li><a href="{% url 'cadastrar_nota' %}">Notas</a></li>
+                    <li><a href="{% url 'cadastrar_cliente' %}">Clientes</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'login_usuario' %}" class="menu-item">
+                    <img src="{% static 'financeiro/img/volt.png' %}" class="menu-icon">
+                    Sair
+                </a>
+        </ul>
+    </div>
+
+    <!-- Barra lateral com informações do usuário -->
+    <div class="sidebar">
+        <h2 style="color: #124458; font-weight: bold;">Wave Financas</h2>
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="data:image/png;base64,{{ foto_base64 }}" alt="User Avatar">
+            </div>
+            <div class="user-info">
+                <h2>Perfil</h2>
+                <div class="user-detail">
+                    <p><strong>Nome:</strong> {{ nome.upper }}</p>
+                    <hr class="info-separator">
+                    <p><strong>Email:</strong> {{ email }}</p>
+                    <hr class="info-separator">
+                    <p><strong>Telefone:</strong> {{ telefone }}</p>
+                    <hr class="info-separator">
+                </div>
+            </div>
+            <div class="clock">
+                <p id="clock"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-deck mt-3">
+        <div class="card">
+            <div class="card-header" style="background-color: #33393B;">Receita</div>
+            <div class="card-body" style="background-color: #33393B;">
+                <h5 class="card-title">Total Receitas</h5>
+                <p id="receitas_">Carregando...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" style="background-color: #334756;">Despesa</div>
+            <div class="card-body" style="background-color: #334756;">
+                <h5 class="card-title">Total Despesas</h5>
+                <p id="despesas_">Carregando...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" style="background-color: #335747;">Saldo</div>
+            <div class="card-body" style="background-color: #335747;">
+                <h5 class="card-title">Saldo Atual</h5>
+                <p id="saldo_">Carregando...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="filter-card">
+            <h3>Filtro de Lançamentos</h3>
+            <form id="filter-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="tipo-lancamento">Tipo de Lançamento:</label>
+                    <select name="tipo-lancamento" id="tipo-lancamento">
+                        <option value="saldo">Saldo (Total)</option>
+                        <option value="entrada">Entradas (Receitas)</option>
+                        <option value="saida">Saídas (Despesas)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="periodo-inicial">Período Inicial:</label>
+                    <input type="date" name="periodo-inicial" id="periodo-inicial">
+                </div>
+                <div class="form-group">
+                    <label for="periodo-final">Período Final:</label>
+                    <input type="date" name="periodo-final" id="periodo-final">
+                </div>
+                <button type="submit" style="background-color: #334756;  border: none; border-radius: 4px; width: 80px; color: white;">Filtrar</button>
+            </form>
+        </div>
+        <div class="chart-container">
+            <canvas id="areaChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'financeiro/js/fluxo.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+        window.onload = fetchFinanceData;
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('areaChart').getContext('2d');
+
+            const formatDate = (dateStr) => {
+                const [year, month] = dateStr.split('-');
+                const monthNames = [
+                    'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+                    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+                ];
+                return `${monthNames[parseInt(month, 10) - 1]} de ${year}`;
+            };
+
+            const updateChart = (data) => {
+                if (!data.length) {
+                    console.warn('Nenhum dado encontrado.');
+                    areaChart.data.labels = [];
+                    areaChart.data.datasets[0].data = [];
+                    areaChart.update();
+                    return;
+                }
+
+                const labels = data.map(entry => formatDate(entry.data));
+                const dataset = data.map(entry => entry.total);
+
+                areaChart.data.labels = labels;
+                areaChart.data.datasets[0].data = dataset;
+                areaChart.update();
+            };
+
+            const fetchData = (filters) => {
+                const queryString = new URLSearchParams(filters).toString();
+                fetch(`/financeiro/fluxo_financeiro/?${queryString}`, {
+                    headers: { 'x-requested-with': 'XMLHttpRequest' }
+                })
+                    .then(response => response.json())
+                    .then(data => updateChart(data.entradas_mes))
+                    .catch(error => console.error('Erro ao buscar dados:', error));
+            };
+
+            const areaChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Fluxo Financeiro',
+                        data: [],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: (value) => 'R$ ' + value.toFixed(2),
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Evento para aplicar filtros
+            document.getElementById('filter-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const tipoLancamento = document.getElementById('tipo-lancamento').value;
+                const periodoInicial = document.getElementById('periodo-inicial').value;
+                const periodoFinal = document.getElementById('periodo-final').value;
+
+                const filters = {
+                    'tipo-lancamento': tipoLancamento,
+                    'periodo-inicial': periodoInicial,
+                    'periodo-final': periodoFinal,
+                };
+
+                fetchData(filters);
+            });
+
+            // Busca inicial (sem filtros)
+            fetchData({});
+        });
+
+    </script>
+</body>
+</html>

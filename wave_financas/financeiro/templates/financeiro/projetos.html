@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projetos - Wave FinTech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'financeiro/css/financeiro.css' %}">
+</head>
+<body>
+    <div class="container mt-4" style="height: calc(100vh - 250px); overflow-y: auto;">
+        <h2 class="text-center mb-4" style="color: #7C7C7C; font-weight: bold;">Cadastro de Projetos</h2>
+        <form id="projeto-form" method="post" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="nome_projeto" class="form-label text-white">Titulo Projeto:</label>
+                <input type="text" id="nome_projeto" name="nome_projeto" class="form-control" placeholder="Titulo Projeto" required>
+            </div>
+            <div class="mb-3">
+                <label for="observacao" class="form-label text-white">Descrição:</label>
+                <textarea id="observacao" name="observacao" class="form-control" rows="2" placeholder="Descreva o projeto..." required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="valor_cobrado" class="form-label text-white">Valor Cobrado:</label>
+                <input type="number" id="valor_cobrado" name="valor_cobrado" class="form-control" placeholder="Digite o valor cobrado" required>
+            </div>
+            <div class="mb-3">
+                <label for="valor_gasto" class="form-label text-white">Valor Gasto:</label>
+                <input type="number" id="valor_gasto" name="valor_gasto" class="form-control" placeholder="Digite o valor gasto (opcional)">
+            </div>
+            <div class="mb-3">
+                <label for="data_inicio" class="form-label text-white">Data Início:</label>
+                <input type="date" id="data_inicio" name="data_inicio" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="data_fim" class="form-label text-white">Data Fim:</label>
+                <input type="date" id="data_fim" name="data_fim" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="id_cliente" class="form-label text-white">Cliente:</label>
+                <select id="id_cliente" name="id_cliente" class="form-select">
+                    <option value="">Nenhum</option>
+                    {% for cliente in clientes %}
+                        <option value="{{ cliente.id_cliente }}">{{ cliente.nome_cliente }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn w-100 mb-3" style="background-color: #2D7997; color: white;">Cadastrar</button>
+        </form>
+        <div>
+            <div id="form-message" class="alert alert-info text-center d-none"></div>
+        </div>
+    </div>
+    <script src="{% static 'financeiro/js/financeiro.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('projeto-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formMessage = document.getElementById('form-message');
+            var formData = new FormData(this);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/financeiro/cadastrar_projeto/', true);
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    var response = JSON.parse(xhr.responseText);
+
+                if (xhr.status === 201) {
+                    formMessage.textContent = response.success;
+                    formMessage.className = 'alert alert-success text-center';
+                    formMessage.classList.remove('d-none');
+
+                    document.getElementById('projeto-form').reset();
+
+                    setTimeout(function () {
+                        formMessage.classList.add('d-none');
+                    }, 3000);
+                } else {
+                    formMessage.textContent = response.error || 'Erro ao cadastrar o projeto.';
+                    formMessage.className = 'alert alert-danger text-center';
+                    formMessage.classList.remove('d-none');
+
+                    setTimeout(function () {
+                        formMessage.classList.add('d-none');
+                    }, 3000);
+                }
+                }
+            };
+            xhr.send(formData);
+        });
+        hideContainers();
+    </script>
+</body>
+</html>

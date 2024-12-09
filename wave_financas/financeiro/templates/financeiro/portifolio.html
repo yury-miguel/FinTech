@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio - Wave FinTech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'financeiro/css/financeiro.css' %}">
+</head>
+<body>
+    {% include "financeiro/fluxo.html" %}
+    <div class="container mt-4" style="margin-left: 8.1cm; max-width: calc(100% - 8.3cm); height: calc(100vh - 90px);">
+        <h1 class="text-center" style="color: #7C7C7C; font-weight: bold;">Portifólio</h1>
+
+        <!-- Abas para alternar entre seções -->
+        <ul class="nav nav-tabs" id="portfolioTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" style="color: #2D7997;" id="projetos-tab" data-bs-toggle="tab" data-bs-target="#projetos" type="button" role="tab" aria-controls="projetos" aria-selected="true">Projetos</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" style="color: #2D7997;" id="ativos-tab" data-bs-toggle="tab" data-bs-target="#ativos" type="button" role="tab" aria-controls="ativos" aria-selected="false">Ativos</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" style="color: #2D7997;" id="daytrade-tab" data-bs-toggle="tab" data-bs-target="#daytrade" type="button" role="tab" aria-controls="daytrade" aria-selected="false">DayTrade Mensal</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" style="color: #2D7997;" id="observacoes-tab" data-bs-toggle="tab" data-bs-target="#observacoes" type="button" role="tab" aria-controls="observacoes" aria-selected="false">Operações DayTrade</button>
+            </li>
+        </ul>
+
+        <!-- Conteúdo das Abas -->
+        <div class="tab-content mt-3">
+            <!-- Projetos -->
+            <div class="tab-pane fade show active" id="projetos" role="tabpanel" aria-labelledby="projetos-tab">
+                {% include "financeiro/projetos.html" with clientes=clientes %}
+            </div>
+            <!-- Ativos -->
+            <div class="tab-pane fade" id="ativos" role="tabpanel" aria-labelledby="ativos-tab">
+                {% include "financeiro/ativos.html" %}
+            </div>
+            <!-- DayTrade -->
+            <div class="tab-pane fade" id="daytrade" role="tabpanel" aria-labelledby="daytrade-tab">
+                {% include "financeiro/daytrade.html" %}
+            </div>
+
+            <div class="tab-pane fade" id="observacoes" role="tabpanel" aria-labelledby="observacoes-tab">
+                {% include "financeiro/observacoes.html" %}
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'financeiro/js/financeiro.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+          hideContainers();
+    </script>
+</body>
+</html>

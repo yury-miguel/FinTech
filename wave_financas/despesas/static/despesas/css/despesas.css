@@ -1,0 +1,93 @@
+.container
+{
+    background-color: #1D202A;
+    border: 1px solid rgb(149,211,239);
+    padding: 20px;
+    border-radius: 10px;
+}
+.text-white
+{
+    color: #fff !important;
+}
+.fw-bold
+{
+    font-weight: 700;
+}
+.container
+{
+    padding: 1rem;
+}
+.row
+{
+    margin-bottom: 1.5rem;
+}
+h1
+{
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+}
+#new-category-form
+{
+    display: none;
+    margin-top: 20px;
+}
+#new-category-form label
+{
+    margin-bottom: 5px;
+    display: block;
+}
+#new-category-form input
+{
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    margin-right: 5px;
+    box-sizing: border-box;
+}
+#new-category-form button
+{
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2D7997;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+.table
+{
+    color: #fff;
+}
+.table-striped tbody tr:nth-of-type(odd)
+{
+    background-color: rgba(255, 255, 255, 0.05);
+}
+.table-hover tbody tr:hover
+{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.card
+{
+    border: none;
+    border-radius: 0.5rem;
+}
+.card-title
+{
+    font-family: 'Arial', sans-serif;
+}
+.total-despesas
+{
+     border: 1px solid rgb(149,211,239);
+     margin-bottom: 40px;
+     font-size: 28px;
+     font-weight: bold;
+}
+.grafico-pareto
+{
+     height: calc(100vh - 350px);
+     border: 1px solid rgb(149,211,239);
+}

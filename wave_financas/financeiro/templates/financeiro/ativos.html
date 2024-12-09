@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ativos - Wave FinTech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'financeiro/css/financeiro.css' %}">
+</head>
+<body>
+    <div class="container mt-4" style="height: calc(100vh - 250px); overflow-y: auto;">
+        <h2 class="text-center mb-4" style="color: #7C7C7C; font-weight: bold;">Cadastro de Ativos</h2>
+        <form id="ativo-form" method="post" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="descricao" class="form-label text-white">Descrição:</label>
+                <textarea id="descricao" name="descricao" class="form-control" rows="2" placeholder="Descreva o ativo..." required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="valor_investido" class="form-label text-white">Valor Investido:</label>
+                <input type="number" id="valor_investido" name="valor_investido" class="form-control" placeholder="Digite o valor investido" required>
+            </div>
+            <div class="mb-3">
+                <label for="data_investimento" class="form-label text-white">Data Investimento:</label>
+                <input type="date" id="data_investimento" name="data_investimento" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="valor_retorno" class="form-label text-white">Valor Retorno:</label>
+                <input type="number" id="valor_retorno" name="valor_retorno" class="form-control" placeholder="Digite o valor retorno (opcional)">
+            </div>
+            <div class="mb-3">
+                <label for="data_retorno" class="form-label text-white">Data Retorno:</label>
+                <input type="date" id="data_retorno" name="data_retorno" class="form-control">
+            </div>
+            <button type="submit" class="btn w-100 mb-3" style="background-color: #2D7997; color: white;">Cadastrar</button>
+        </form>
+        <div>
+            <div id="form-message2" class="alert alert-info text-center d-none"></div>
+        </div>
+    </div>
+    <script src="{% static 'financeiro/js/financeiro.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('ativo-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formMessage = document.getElementById('form-message2');
+            var formData = new FormData(this);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/financeiro/cadastrar_ativo/', true);
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    var response = JSON.parse(xhr.responseText);
+
+                if (xhr.status === 201) {
+                    formMessage.textContent = response.success;
+                    formMessage.className = 'alert alert-success text-center';
+                    formMessage.classList.remove('d-none');
+
+                    document.getElementById('ativo-form').reset();
+
+                    setTimeout(function () {
+                        formMessage.classList.add('d-none');
+                    }, 3000);
+                } else {
+                    formMessage.textContent = response.error || 'Erro ao cadastrar o ativo.';
+                    formMessage.className = 'alert alert-danger text-center';
+                    formMessage.classList.remove('d-none');
+
+                    setTimeout(function () {
+                        formMessage.classList.add('d-none');
+                    }, 3000);
+                }
+                }
+            };
+            xhr.send(formData);
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const formMessage = document.getElementById('form-message');
+            if (formMessage.textContent.trim() !== "") {
+                formMessage.classList.remove('d-none');
+                setTimeout(() => {
+                    formMessage.classList.add('d-none');
+                }, 3000);
+            }
+        });
+        hideContainers();
+    </script>
+</body>
+</html>
